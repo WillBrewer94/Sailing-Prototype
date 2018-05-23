@@ -30,7 +30,7 @@ public class CameraFollow : MonoBehaviour {
     ParallaxScroll[] BackLayers;
 
     void Start() {
-        focusArea = new FocusArea(target.collider.bounds, focusAreaSize);
+        focusArea = new FocusArea(target.gameObject.GetComponent<Collider>().bounds, focusAreaSize);
 
         ForeLayers = ParallaxForeCam.GetComponentsInChildren<ParallaxScroll>();
         BackLayers = ParallaxBackCam.GetComponentsInChildren<ParallaxScroll>();
@@ -39,7 +39,7 @@ public class CameraFollow : MonoBehaviour {
     }
 
     void LateUpdate() {
-        focusArea.Update(target.collider.bounds);
+        focusArea.Update(target.gameObject.GetComponent<Collider>().bounds);
 
         Vector2 focusPos = focusArea.center + Vector2.up * verticalOffset;
 
