@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class CameraFollow : MonoBehaviour {
-    public Camera ParallaxForeCam;
-    public Camera ParallaxBackCam;
     public Controller2D target;
     public float verticalOffset;
     public Vector2 focusAreaSize;
@@ -22,24 +20,12 @@ public class CameraFollow : MonoBehaviour {
 
     bool lookAheadStopped;
 
-    //Parallax Variables
-    Player player;
-    Vector2 scrollSpeedTarget;
-    float smoothScrollSpeedX;
-    ParallaxScroll[] ForeLayers;
-    ParallaxScroll[] BackLayers;
-
     void Start() {
-        focusArea = new FocusArea(target.gameObject.GetComponent<Collider>().bounds, focusAreaSize);
-
-        ForeLayers = ParallaxForeCam.GetComponentsInChildren<ParallaxScroll>();
-        BackLayers = ParallaxBackCam.GetComponentsInChildren<ParallaxScroll>();
-
-        player = GameObject.FindGameObjectWithTag("MainPlayer").GetComponent<Player>();
+        focusArea = new FocusArea(target.GetComponent<Collider2D>().bounds, focusAreaSize);
     }
 
     void LateUpdate() {
-        focusArea.Update(target.gameObject.GetComponent<Collider>().bounds);
+        focusArea.Update(target.GetComponent<Collider2D>().bounds);
 
         Vector2 focusPos = focusArea.center + Vector2.up * verticalOffset;
 
@@ -48,6 +34,7 @@ public class CameraFollow : MonoBehaviour {
             if(Mathf.Sign(target.playerInput.x) == Mathf.Sign(focusArea.velocity.x) && target.playerInput.x != 0) {
                 lookAheadStopped = false;
                 targetLookAheadX = lookAheadDirX * lookAheadDistX;
+
             } else {
                 if(!lookAheadStopped) {
                     lookAheadStopped = true;
@@ -61,25 +48,11 @@ public class CameraFollow : MonoBehaviour {
         focusPos.y = Mathf.SmoothDamp(transform.position.y, focusPos.y, ref smoothVelocityY, verticalSmoothTime);
         focusPos += Vector2.right * currLookAheadX;
         transform.position = (Vector3) focusPos + Vector3.forward * -10;
-       
-        ScrollParallax(player.GetVelocity());
     }
 
     void OnDrawGizmos() {
         Gizmos.color = new Color(1, 0, 0, .5f);
         Gizmos.DrawCube(focusArea.center, focusAreaSize);
-    }
-
-    void ScrollParallax(Vector2 scrollSpeed) {
-        //Update foreground Speed
-        for (int i = 0; i < ForeLayers.Length; i++) {
-            ForeLayers[i].speed = scrollSpeed.x;
-        }
-
-        //Update Background Speed
-        for (int i = 0; i < BackLayers.Length; i++) {
-            BackLayers[i].speed = scrollSpeed.x;
-        }
     }
 
     struct FocusArea {

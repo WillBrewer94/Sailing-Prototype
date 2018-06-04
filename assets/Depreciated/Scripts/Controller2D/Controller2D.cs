@@ -5,16 +5,19 @@ using System.Collections.Generic;
 public class Controller2D : RaycastController {
     public float maxSlopeAngle = 80;
 
+    //Toggle for code to make player stick to descending slopes
+    public bool isDescendSlope = true;
+
     [HideInInspector]
     public Vector2 playerInput;
     public RaycastHit2D hit;
     public List<RaycastHit2D> raycastHitsThisFrame = new List<RaycastHit2D>(2);
 
     public CollisionInfo collisions;
-    public event Action<RaycastHit2D> onControllerCollidedEvent;
-    public event Action<Collider2D> onTriggerEnterEvent;
-    public event Action<Collider2D> onTriggerStayEvent;
-    public event Action<Collider2D> onTriggerExitEvent;
+    public event Action<RaycastHit2D> OnControllerCollidedEvent;
+    public event Action<Collider2D> OnTriggerEnterEvent;
+    public event Action<Collider2D> OnTriggerStayEvent;
+    public event Action<Collider2D> OnTriggerExitEvent;
 
     public override void Start() {
         base.Start();
@@ -22,22 +25,20 @@ public class Controller2D : RaycastController {
     }
 
     public void OnTriggerEnter2D(Collider2D col) {
-        if(onTriggerEnterEvent != null) {
-            onTriggerEnterEvent(col);
+        if(OnTriggerEnterEvent != null) {
+            OnTriggerEnterEvent(col);
         }
     }
-
 
     public void OnTriggerStay2D(Collider2D col) {
-        if(onTriggerStayEvent != null) {
-            onTriggerStayEvent(col);
+        if(OnTriggerStayEvent != null) {
+            OnTriggerStayEvent(col);
         }
     }
 
-
     public void OnTriggerExit2D(Collider2D col) {
-        if(onTriggerExitEvent != null) {
-            onTriggerExitEvent(col);
+        if(OnTriggerExitEvent != null) {
+            OnTriggerExitEvent(col);
         }
     }
 
@@ -56,7 +57,7 @@ public class Controller2D : RaycastController {
         playerInput = input;
 
         //Descend slope if only moving down
-        if(deltaMove.y < 0) {
+        if(deltaMove.y < 0 && isDescendSlope) {
             DescendSlope(ref deltaMove);
         }
 
@@ -76,9 +77,9 @@ public class Controller2D : RaycastController {
             collisions.below = true;
         }
 
-        if(onControllerCollidedEvent != null) {
+        if(OnControllerCollidedEvent != null) {
             for(var i = 0; i < raycastHitsThisFrame.Count; i++) {
-                onControllerCollidedEvent(raycastHitsThisFrame[i]);
+                OnControllerCollidedEvent(raycastHitsThisFrame[i]);
             }
         }
     }
@@ -94,6 +95,7 @@ public class Controller2D : RaycastController {
 
         for(int i = 0; i < horizontalRayCount; i++) {
             Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
+            Debug.Log(raycastOrigins.bottomLeft);
             rayOrigin += Vector2.up * (horizontalRaySpacing * i);
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 

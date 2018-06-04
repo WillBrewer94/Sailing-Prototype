@@ -1,30 +1,23 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using InControl;
-using System.Collections;
 
-[RequireComponent(typeof(Player))]
-public class PlayerInput : MonoBehaviour {
+[RequireComponent(typeof(Boat))]
+public class BoatInput : MonoBehaviour {
     InputDevice device;
     InputControl control;
 
-    Player player;
+    Boat player;
     public PlayerActions playerActions;
 
     void Start() {
-        player = GetComponent<Player>();
+        player = GetComponent<Boat>();
         playerActions = CreateWithDefaultBindings();
     }
 
     void Update() {
         player.SetDirectionalInput(playerActions.Move);
-
-        if(playerActions.Jump.WasPressed) {
-            player.OnJumpInputDown();
-        }
-
-        if(playerActions.Jump.WasReleased) {
-            player.OnJumpInputUp();
-        }
     }
 
     //=========================
@@ -51,7 +44,7 @@ public class PlayerInput : MonoBehaviour {
         playerActions.ListenOptions.IncludeUnknownControllers = true;
         playerActions.ListenOptions.MaxAllowedBindings = 4;
         playerActions.ListenOptions.UnsetDuplicateBindingsOnSet = true;
-        
+
         return playerActions;
     }
 }

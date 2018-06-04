@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class RaycastController : MonoBehaviour {
-
     public LayerMask collisionMask;
 
     public const float skinWidth = .015f;
@@ -35,10 +34,11 @@ public class RaycastController : MonoBehaviour {
         Bounds bounds = boxCollider.bounds;
         bounds.Expand(skinWidth * -2);
 
-        raycastOrigins.bottomLeft = new Vector2(bounds.min.x, bounds.min.y);
-        raycastOrigins.bottomRight = new Vector2(bounds.max.x, bounds.min.y);
-        raycastOrigins.topLeft = new Vector2(bounds.min.x, bounds.max.y);
-        raycastOrigins.topRight = new Vector2(bounds.max.x, bounds.max.y);
+        //Calculate world space locations for corners
+        raycastOrigins.bottomLeft = transform.TransformPoint(new Vector2(boxCollider.size.x, boxCollider.size.y) * 0.5f + boxCollider.offset);
+        raycastOrigins.bottomRight = transform.TransformPoint(new Vector2(-boxCollider.size.x, boxCollider.size.y) * 0.5f + boxCollider.offset);
+        raycastOrigins.topLeft = transform.TransformPoint(new Vector2(boxCollider.size.x, -boxCollider.size.y) * 0.5f + boxCollider.offset);
+        raycastOrigins.topRight = transform.TransformPoint(new Vector2(-boxCollider.size.x, -boxCollider.size.y) * 0.5f + boxCollider.offset);
     }
 
     public void CalculateRaySpacing() {
@@ -54,6 +54,29 @@ public class RaycastController : MonoBehaviour {
         horizontalRaySpacing = bounds.size.y / (horizontalRayCount - 1);
         verticalRaySpacing = bounds.size.x / (verticalRayCount - 1);
     }
+
+    void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(raycastOrigins.bottomLeft, 0.1f);
+        Gizmos.DrawSphere(raycastOrigins.bottomRight, 0.1f);
+        Gizmos.DrawSphere(raycastOrigins.topLeft, 0.1f);
+        Gizmos.DrawSphere(raycastOrigins.topRight, 0.1f);
+    }
+
+    /*void OnDrawGizmos() {
+        BoxCollider2D b = GetComponent<BoxCollider2D>();
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.TransformPoint(b.offset + new Vector2(b.size.x, b.size.y) * 0.5f), 0.1f);
+        Gizmos.DrawSphere(transform.TransformPoint(b.offset + new Vector2(b.size.x, -b.size.y) * 0.5f), 0.1f);
+        Gizmos.DrawSphere(transform.TransformPoint(b.offset + new Vector2(-b.size.x, b.size.y) * 0.5f), 0.1f);
+        Gizmos.DrawSphere(transform.TransformPoint(b.offset + new Vector2(-b.size.x, -b.size.y) * 0.5f), 0.1f);
+
+        Gizmos.DrawSphere(transform.TransformPoint(b.offset + new Vector2(b.size.x, b.size.y) * 0.5f), 0.1f);
+        Gizmos.DrawSphere(transform.TransformPoint(b.offset + new Vector2(b.size.x, -b.size.y) * 0.5f), 0.1f);
+        Gizmos.DrawSphere(transform.TransformPoint(b.offset + new Vector2(-b.size.x, b.size.y) * 0.5f), 0.1f);
+        Gizmos.DrawSphere(transform.TransformPoint(b.offset + new Vector2(-b.size.x, -b.size.y) * 0.5f), 0.1f);
+    }*/
 
     public struct RaycastOrigins {
         public Vector2 topLeft, topRight;

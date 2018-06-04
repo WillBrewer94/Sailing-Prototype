@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerActions : PlayerActionSet {
     public PlayerAction Jump;
-
     public PlayerAction Left;
     public PlayerAction Right;
     public PlayerAction Up;
