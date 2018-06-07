@@ -13,3 +13,11 @@ Potential Game Mechanics (Testing):
 -Between islands are "current corridors" that will move the player faster in either direction. Moving outside these corridors has slower
 movement, but potential for untapped or unexplored areas. Start off with no engine, so ship must follow these corridors, but eventually 
 can upgrade ship to explore these areas faster.
+
+
+       _~
+    _~ )_)_~
+    )_))_))_)
+    _!__!__!_
+    \______t/
+  ~~~~~~~~~~~~~
