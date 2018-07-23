@@ -25,6 +25,10 @@ public class PlayerInput : MonoBehaviour {
         if(playerActions.Jump.WasReleased) {
             player.OnJumpInputUp();
         }
+
+        if(playerActions.Interact.WasPressed) {
+            player.OnInteractInputDown();
+        }
     }
 
     //=========================
@@ -42,6 +46,9 @@ public class PlayerInput : MonoBehaviour {
         playerActions.Down.AddDefaultBinding(Key.S);
         playerActions.Left.AddDefaultBinding(Key.A);
         playerActions.Right.AddDefaultBinding(Key.D);
+
+        playerActions.Jump.AddDefaultBinding(Key.Space);
+        playerActions.Interact.AddDefaultBinding(Key.F);
 
         playerActions.Left.AddDefaultBinding(InputControlType.LeftStickLeft);
         playerActions.Right.AddDefaultBinding(InputControlType.LeftStickRight);

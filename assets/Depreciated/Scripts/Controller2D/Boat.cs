@@ -4,8 +4,10 @@ using System.Collections;
 [RequireComponent(typeof(Controller2D))]
 public class Boat : MonoBehaviour {
     //Configured Values
-    public float accelerationTimeBase = .2f;
-    public float moveSpeed = 6;
+    public float accelerationTimeBase = 1f;
+    public float rotTimeBase = 1f;
+    public float moveSpeed = 100;
+    public float rotSpeed = 100;
     
 
     //Calculated Values
@@ -17,6 +19,8 @@ public class Boat : MonoBehaviour {
     int wallDirX;
     float velocityXSmoothing;
     float velocityYSmoothing;
+    float rotVelSmoothing;
+    float rotVel;
 
     //Components
     Controller2D controller;
@@ -41,11 +45,12 @@ public class Boat : MonoBehaviour {
 
 
     void CalculateVelocity() {
-        float targetVelocityX = directionalInput.x * moveSpeed;
+        float targetRotSpeed = directionalInput.x * rotSpeed;
         float targetVelocityY = directionalInput.y * moveSpeed;
         //velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, accelerationTimeBase);
         velocity.y = Mathf.SmoothDamp(velocity.y, targetVelocityY, ref velocityYSmoothing, accelerationTimeBase);
-        transform.Rotate(Vector3.back * Time.deltaTime * targetVelocityX * 20);
+        rotVel = Mathf.SmoothDamp(rotVel, targetRotSpeed, ref rotVelSmoothing, rotTimeBase);
+        transform.Rotate(Vector3.back * Time.deltaTime * rotVel);
     }
 
     public void SetDirectionalInput(Vector2 input) {

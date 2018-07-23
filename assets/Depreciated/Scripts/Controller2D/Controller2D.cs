@@ -95,10 +95,8 @@ public class Controller2D : RaycastController {
 
         for(int i = 0; i < horizontalRayCount; i++) {
             Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
-            Debug.Log(raycastOrigins.bottomLeft);
             rayOrigin += Vector2.up * (horizontalRaySpacing * i);
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
-
             Debug.DrawRay(rayOrigin, Vector2.right * directionX, Color.red);
 
             if(hit) {
@@ -146,12 +144,11 @@ public class Controller2D : RaycastController {
         float rayLength = Mathf.Abs(deltaMove.y) + skinWidth;
 
         for(int i = 0; i < verticalRayCount; i++) {
-
             Vector2 rayOrigin = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
-            rayOrigin += Vector2.right * (verticalRaySpacing * i + deltaMove.x);
-            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
+            rayOrigin += (Vector2)transform.right * (verticalRaySpacing * i + deltaMove.x);
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, transform.up * directionY, rayLength, collisionMask);
 
-            Debug.DrawRay(rayOrigin, Vector2.up * directionY, Color.red);
+            Debug.DrawRay(rayOrigin, transform.up * directionY, Color.red);
 
             if(hit) {
                 if(hit.collider.tag == "Through") {

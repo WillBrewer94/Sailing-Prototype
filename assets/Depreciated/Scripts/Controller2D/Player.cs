@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 [RequireComponent(typeof(Controller2D))]
@@ -34,6 +35,10 @@ public class Player : MonoBehaviour {
 
     //Input
     Vector2 directionalInput;
+
+    //Interactable
+    GameObject interactObj;
+    public bool isInteract = false;
 
     void Start() {
         controller = GetComponent<Controller2D>();
@@ -137,7 +142,33 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void OnInteractInputDown() {
+        //Handle interactions by parsing objects colliding with
+        if(isInteract && interactObj) {
+            string room = interactObj.GetComponent<RoomTransition>().GetRoomTransition();
+            SceneManager.LoadScene(room);
+        } 
+    }
+
+    public void OnInteractInputUp() {
+
+    }
+
     public Vector2 GetVelocity() {
         return velocity;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision) {
+        if(collision.gameObject.tag == "RoomTransition") {
+            isInteract = true;
+            interactObj = collision.gameObject;
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D collision) {
+        if(collision.gameObject.tag == "RoomTransition") {
+            isInteract = false;
+            interactObj = null;
+        }
     }
 }

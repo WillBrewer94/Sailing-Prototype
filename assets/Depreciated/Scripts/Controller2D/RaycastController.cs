@@ -35,10 +35,10 @@ public class RaycastController : MonoBehaviour {
         bounds.Expand(skinWidth * -2);
 
         //Calculate world space locations for corners
-        raycastOrigins.bottomLeft = transform.TransformPoint(new Vector2(boxCollider.size.x, boxCollider.size.y) * 0.5f + boxCollider.offset);
-        raycastOrigins.bottomRight = transform.TransformPoint(new Vector2(-boxCollider.size.x, boxCollider.size.y) * 0.5f + boxCollider.offset);
-        raycastOrigins.topLeft = transform.TransformPoint(new Vector2(boxCollider.size.x, -boxCollider.size.y) * 0.5f + boxCollider.offset);
-        raycastOrigins.topRight = transform.TransformPoint(new Vector2(-boxCollider.size.x, -boxCollider.size.y) * 0.5f + boxCollider.offset);
+        raycastOrigins.topRight = transform.TransformPoint(new Vector2(boxCollider.size.x, boxCollider.size.y) * 0.5f + boxCollider.offset);
+        raycastOrigins.topLeft = transform.TransformPoint(new Vector2(-boxCollider.size.x, boxCollider.size.y) * 0.5f + boxCollider.offset);
+        raycastOrigins.bottomRight = transform.TransformPoint(new Vector2(boxCollider.size.x, -boxCollider.size.y) * 0.5f + boxCollider.offset);
+        raycastOrigins.bottomLeft = transform.TransformPoint(new Vector2(-boxCollider.size.x, -boxCollider.size.y) * 0.5f + boxCollider.offset);
     }
 
     public void CalculateRaySpacing() {
@@ -55,13 +55,13 @@ public class RaycastController : MonoBehaviour {
         verticalRaySpacing = bounds.size.x / (verticalRayCount - 1);
     }
 
-    void OnDrawGizmos() {
+    /*void OnDrawGizmos() {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(raycastOrigins.bottomLeft, 0.1f);
         Gizmos.DrawSphere(raycastOrigins.bottomRight, 0.1f);
         Gizmos.DrawSphere(raycastOrigins.topLeft, 0.1f);
         Gizmos.DrawSphere(raycastOrigins.topRight, 0.1f);
-    }
+    }*/
 
     /*void OnDrawGizmos() {
         BoxCollider2D b = GetComponent<BoxCollider2D>();

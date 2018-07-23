@@ -312,7 +312,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   accelerationTimeBase: 0.2
-  moveSpeed: 6
+  rotTimeBase: 1
+  moveSpeed: 2
+  rotSpeed: 100
 --- !u!114 &1393466344
 MonoBehaviour:
   m_ObjectHideFlags: 0

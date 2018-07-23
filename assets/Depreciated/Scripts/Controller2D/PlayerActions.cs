@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerActions : PlayerActionSet {
     public PlayerAction Jump;
+    public PlayerAction Interact;
     public PlayerAction Left;
     public PlayerAction Right;
     public PlayerAction Up;
@@ -12,6 +13,7 @@ public class PlayerActions : PlayerActionSet {
 
     public PlayerActions() {
         Jump = CreatePlayerAction("Jump");
+        Interact = CreatePlayerAction("Interact");
 
         Left = CreatePlayerAction("Move Left");
         Right = CreatePlayerAction("Move Right");
